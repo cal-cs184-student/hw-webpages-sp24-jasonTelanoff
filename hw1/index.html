@@ -1,38 +1,65 @@
-<html>
-	<head>
-	</head>
-	<body>
-		<title>Homework 1 Write-Up</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homework 1 Write-Up</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
 
-		<h1>Task 1</h1>
-		<p>To rasterize my triangles I looped through all points of the screen and checked if it was within the triangle. To do this, I treated the edges as lines and checked if the point was “inside” of each of the lines.
-		The algorithm works well because it looks good (?).</p>
-		
-		<p>Instead of calculating l0, l1, and l2 for every point it is calculated at the beginning. Then, they are added and subtracted at each point which is much more efficient. This ends up being roughly twice as fast as my unoptimized version.
-		</p>
-		
-		<h1>Task 2</h1>
-		<p>My super sampling algorithm changes sample_buffer to instead be width * height * sample_rate large. It also changes dxi and dyi by dividing by sqrt(sample_rate). When I then read the sample buffer to the frame buffer I look at the box of pixels of size sqrt(sample_rate)xsqrt(sample_rate). Supersampling is useful because it removes jaggies and moire, making our renders look crisper and less compressed. Supersampling antialiased my triangles because it isn’t binary. So if a pixel is 75% covered by the triangle it’ll be 75% colored instead of 100% or 0%.
-		</p>
-			
-		<h1>Task 3</h1>
-		<p>I wanted to make the cube man do a one-handed handstand. He’s on a very well maintained green lawn, in front of a beautiful cloudless sky.
-		</p>
-			
-		<h1>Task 4</h1>
-		<p>Barycentric coordinates are essentially the normalized distance to each vertex of the triangle. The sums will always equal 1, and the closer you are to a vertex, the larger its influence is. That means we get a continuous color at every point inside the triangle, relative to each vertex
-		</p>
-			
-		<h1>Task 5</h1>
-		<p>Pixel sampling is a way of rendering image textures onto the canvas. I implemented it two different ways. For nearest, I would get the closest texel to the coordinates normalized based on the triangle’s new coordinates. For bilinear, I would take the closest 4 pixels to the transformed pixel and normalize them based on distance.
-		</p>
-		<p>The bilinear ones are slightly smoother. The biggest difference still comes from supersampling though. The difference between bilinear and nearest will be most prevalent when given a very small texture image.
-		</p>
-			
-		<h1>Task 6</h1>
-		<p>Level sampling is the act of sampling different resolution images to help with antialiasing and blurring in 3D. I implemented it by using the derivatives of the transform and through that deciding which mipmap level to sample from. Then I used pixel sampling to get the pixel color. I also added trilinear interpolation which helps with blending between level transitions by interpolating between them.
-		</p><p>Pixel sampling doesn’t use any added memory, but it can slow down speed if using bilinear interpolation as it needs to get 4 different values from the texture. Its antialiasing power is clearly visible, and pretty good, though it’s not perfect. Level sampling uses a lot more memory, as you need to store all the different levels in memory. Its speed isn’t terrible, though to interpolate between two different levels it takes twice as long. It helps quite a bit with antialiasing in 3D, as different distances will be able to act more independently and you don’t need to fit it to just one size. Supersampling does wonders for antialiasing. However it takes exponentially more memory and speed to calculate.
-		</p>
+        h1 {
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
 
-	</body>
+        p {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Task 1</h1>
+<p>
+    To rasterize my triangles, I looped through all points of the screen and checked if each point was within the triangle by treating the edges as lines. The algorithm works well because it efficiently determines if a point is inside the triangle.
+</p>
+<p>
+    Instead of recalculating l0, l1, and l2 for every point, I calculated them at the beginning and updated them at each point. This optimization makes the algorithm roughly twice as fast as the unoptimized version.
+</p>
+
+<h1>Task 2</h1>
+<p>
+    My supersampling algorithm increases the size of the sample buffer to width * height * sample_rate. It also adjusts dxi and dyi by dividing them by sqrt(sample_rate). When reading the sample buffer to the frame buffer, I examine a box of pixels of size sqrt(sample_rate) x sqrt(sample_rate). Supersampling is useful because it reduces jaggies and moire patterns, resulting in crisper and less compressed renders. It also anti-aliases triangles, providing smoother color transitions.
+</p>
+
+<h1>Task 3</h1>
+<p>
+    For Task 3, I envisioned the cube man performing a one-handed handstand on a well-maintained green lawn, with a beautiful cloudless sky in the background.
+</p>
+
+<h1>Task 4</h1>
+<p>
+    Barycentric coordinates represent the normalized distance to each vertex of the triangle. The sums of barycentric coordinates always equal 1, and the closer a point is to a vertex, the larger its influence. This results in a continuous color gradient inside the triangle relative to each vertex.
+</p>
+
+<h1>Task 5</h1>
+<p>
+    Pixel sampling is a technique for rendering image textures onto a canvas. I implemented it in two ways: nearest and bilinear. Nearest sampling selects the closest texel to the coordinates normalized based on the triangle’s new coordinates, while bilinear sampling takes the four closest pixels to the transformed pixel and normalizes them based on distance. Bilinear sampling produces slightly smoother results compared to nearest sampling, especially noticeable with very small texture images.
+</p>
+
+<h1>Task 6</h1>
+<p>
+    Level sampling involves sampling different resolution images to aid in antialiasing and blurring in 3D. I implemented it by using the derivatives of the transform to decide which mipmap level to sample from, and then used pixel sampling to get the pixel color. Trilinear interpolation was added to improve blending between level transitions by interpolating between them.
+</p>
+<p>
+    Pixel sampling doesn’t use additional memory but can slow down with bilinear interpolation as it needs to retrieve four different values from the texture. Level sampling requires more memory as all the different levels need to be stored in memory. It helps significantly with antialiasing in 3D, as different distances can act more independently. Supersampling provides excellent antialiasing results but requires exponentially more memory and computational resources.
+</p>
+
+</body>
 </html>
